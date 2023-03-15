@@ -8,8 +8,8 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from num2words import num2words
 import ssl
-import nltk
 
+import nltk
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -79,6 +79,27 @@ def remove_links_maps(page_html_text):
 
     return page_html_text
 
+def remove_unique(page_html_text):
+    page_html_text = re.sub(r"http(\S+.*\s)", "", page_html_text)
+    page_html_text = re.sub(r"ttp(\S+.*\s)", "", page_html_text)
+    page_html_text = re.sub(r"\[(\d+)\]", "", page_html_text)
+    page_html_text = re.sub(r"(2022|2023|©2022|©2023)", "", page_html_text)
+    page_html_text = re.sub(r"[0-9]", "", page_html_text)
+    page_html_text = re.sub(r"^\[Source.*\]$","", page_html_text)
+    page_html_text = re.sub(r"^Russian.*org\)$","", page_html_text)
+    page_html_text = page_html_text.replace("Key Takeaways", "")
+    page_html_text = page_html_text.replace("Satellite image  Maxar Technologies.", "")
+    page_html_text = page_html_text.replace("Note: ISW does not receive any classified material from any source, uses only publicly available information, and draws extensively on Russian, Ukrainian, and Western reporting and social media as well as commercially available satellite imagery and other geospatial data as the basis for these reports. References to all sources used are provided in the endnotes of each update.", "")
+    page_html_text = page_html_text.replace("Appendix A – Satellite Imagery", "")
+    page_html_text = page_html_text.replace("glava_lnr_info", "")
+    page_html_text = page_html_text.replace("kremlin dot ru/events/president/news/70367", "")
+    page_html_text = page_html_text.replace("10 U.S. Code § 885 - Art. 85. Desertion | U.S. Code | US Law | LII / Legal Information Institute (cornell.edu)", "")
+    page_html_text = page_html_text.replace("https//denis-pushilin  dot ru/doc/ukazy/Ukaz_15_23012023 dot pdf", "")
+    page_html_text = page_html_text.replace("Who is Russia's 'butcher of Syria,' now leading the invasion of Ukraine? : NPR Russian General Officer Guide ISW May 11 .pdf (understandingwar.org)", "")
+    page_html_text = page_html_text.replace("Russian Units Severely Undermanned as They Prepare for Kherson Defense—U.K. (newsweek.com)", "")
+
+    return page_html_text
+
 def remove_one_letter_words(data):
     words = word_tokenize(str(data))
 
@@ -111,7 +132,7 @@ def remove_stop_words(data):
 
 
 def remove_punctuation(data):
-    return np.char.replace(data, string.punctuation, '')
+    return re.sub(r'[^\w\s]', '', data)
 
 
 def lemmatizing(data):
@@ -123,15 +144,12 @@ def lemmatizing(data):
         new_text = new_text+" "+lemmatizer.lemmatize(w)
     return new_text
 
-def convert_numbers(data):
-    tokens = word_tokenize(str(data))
-    new_text = ""
-    for w in tokens:
-        if w.isdigit():
-            w = num2words(w)
-        new_text = new_text+" "+w
+def remove_months_pm_am_th(data):
+    data = re.sub(r"(january|february|march|april|may|june|july|august|september|october|november|december)", "", data)
+    data = re.sub(r"(\bpm\b|\bam\b)","",data)
+    data = re.sub(r"\bth\b","",data)
+    return data
 
-    return new_text.replace("-"," ")
 
 
 def preprocess(data):
@@ -139,26 +157,20 @@ def preprocess(data):
     data = convert_to_lower_case(data)
     data = remove_stop_words(data)
     data = remove_punctuation(data)
-    data = convert_numbers(data)
     data = lemmatizing(data)
     data = remove_stop_words(data)
     data = remove_punctuation(data)
+    data = remove_months_pm_am_th(data)
 
     return data
 
+
+
 df['main_html_v2'] = df['main_text'].apply(lambda x: remove_names_and_date(x))
 df['main_html_v2.1'] = df['main_html_v2'].apply(lambda x: remove_links_maps(x))
-
-df['main_html_v2.2'] = df['main_html_v2.1'].apply(lambda x: re.sub(r"http(\S+.*\s)", "", x))
-
-pattern = "\[(\d+)\]"
-
-df['main_html_v2.3'] = df['main_html_v2.2'].apply(lambda x: re.sub(pattern, "", x))
-
-df['main_html_v3'] = df['main_html_v2.3'].apply(lambda x: re.sub(r"(2022|2023|©2022|©2023)", "", x))
-
+df['main_html_v3'] = df['main_html_v2.1'].apply(lambda x: remove_unique(x))
 df['main_html_v4'] = df['main_html_v3'].apply(lambda x: BeautifulSoup(x, "html.parser").text)
+df["report_text"] = df['main_html_v4'].apply(lambda x: preprocess(x))
 
-df["report_text"] = df['main_html_v4'].apply(lambda x:preprocess(x))
 
 df.to_csv(f"{OUTPUT_FOLDER}/{OUTPUT_DATA_FILE}", sep=";", index=False)
