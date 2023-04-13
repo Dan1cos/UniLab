@@ -107,7 +107,7 @@ print("F1 score:", f1)
 import pickle
 
 # Save the model to disk
-filename = '15__StochasticGradientDescent__v1'
-pickle.dump(model, open(filename, 'wb'))
+filename = '5__StochasticGradientDescent__v1'
+with open('5__StochasticGradientDescent__v1.pkl', 'wb') as file:pickle.dump(model, file)
 
 
