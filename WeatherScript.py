@@ -3,7 +3,7 @@ import requests
 import sys
 import json
 
-API_TOKEN = ""
+API_TOKEN = "BARQF7SRVK8B45QGPKEBPZSRD"
 
 
 def generate_weather(city: str, date: str):
@@ -20,13 +20,14 @@ def generate_weather(city: str, date: str):
 
     if response.status_code != 200:
         print('Unexpected Status code: ', response.status_code)
+        raise ConnectionRefusedError(response.status_code)
 
     return json.loads(response.text)
 
 
 # By entering date it will get info about weather for the full day
 # If the date was not entered, it will get info for the next 12 hours
-def getWeatherHours(city: str, date: str):
+def getWeatherHours (city: str, date: str):
     json = generate_weather(city, date)['days'][0]['hours']
     hours = []
     if date:

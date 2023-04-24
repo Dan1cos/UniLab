@@ -60,7 +60,5 @@ def convert_to_vector(doc):
 
 
 df['keywords'] = df['report_text'].apply(lambda x: convert_to_vector(x))
-
 new_df = df[['date','url','keywords']].copy()
-
 new_df.to_csv(f"{OUTPUT_FOLDER}/{OUTPUT_DATA_FILE}", sep=";", index=False)
