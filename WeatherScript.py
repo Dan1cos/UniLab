@@ -3,7 +3,7 @@ import requests
 import sys
 import json
 
-API_TOKEN = "EWURHTGDA5EZVE7NALTDU32L4"
+API_TOKEN = ""
 
 
 def generate_weather(city: str, date: str):
