@@ -28,18 +28,17 @@ def take_vector_from_isw(date_input):
 
     # Check if the page is already download and save it if nessesary. Then save dataframe with html body
     IswPrediction_1.firstSt(date_object, INPUT_FOLDER, DATA_FILE)
-
     df = pd.read_csv(f"{INPUT_FOLDER}/{DATA_FILE}", sep=";").fillna(" ")
     df_for_dict = pd.read_csv(f"{INPUT_FOLDER_2}/{DATA_FILE_2}", sep=";").fillna(" ")
-
     # Clean text
     df_st2 = IswPrediction_2.secondSt(df)
-
     keywords = IswPrediction_3.thirdSt(df_st2, df_for_dict)
+    return keywords.to_dict()
 
-    return keywords
-
-
+#date_input = "23.04.2023"
+#vector = take_vector_from_isw(date_input)
+#for i in vector:
+    #print(i)
 
 
 
