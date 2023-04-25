@@ -4,8 +4,9 @@ import pandas as pd
 from WeatherScript import *
 
 # ENTER INPUT TO regions.csv HERE
-PATH_TO_REGIONS_ID = "../regions.csv"
-PATH_TO_HOUR_CONDITIONS_ENCODER = "../hourConditionsEncoder.pkl"
+PATH_TO_REGIONS_ID = ""
+# ENTER INPUT TO .pkl of hour_conditions encoder HERE
+PATH_TO_HOUR_CONDITIONS_ENCODER = ""
 
 regions = pd.read_csv(f"{PATH_TO_REGIONS_ID}", sep=",")
 

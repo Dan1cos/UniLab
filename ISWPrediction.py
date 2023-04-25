@@ -5,10 +5,13 @@ import IswPrediction_3
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 
-#dictionary from documents
+
+# dictionary from documents
 INPUT_FOLDER_2 = "data"
 DATA_FILE_2 = "parsed_isw.csv"
 df_for_dict = pd.read_csv(f"{INPUT_FOLDER_2}/{DATA_FILE_2}", sep=";").fillna(" ")
+
+
 
 def take_vector_from_isw(date_input):
     # Convert the string date into a datetime object using strptime()
@@ -48,8 +51,11 @@ def take_vector_from_isw(date_input):
     keywords = IswPrediction_3.thirdSt(df_st2, df_for_dict)
     return keywords
 
-#test
-#date_input = "28.04.2023"
-#keywords = take_vector_from_isw(date_input)
-#for i in keywords:
-#    print(i)
+
+
+# test
+if __name__ == "__main__":
+    date_input = date.today()
+    keywords = take_vector_from_isw(date_input)
+    for i in keywords:
+        print(i)
