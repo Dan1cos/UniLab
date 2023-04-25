@@ -52,7 +52,7 @@ def take_vector_from_isw(date_input):
 
 # test
 if __name__ == "__main__":
-    date_input = "28.04.2023"
+    date_input = date.today()
     keywords = take_vector_from_isw(date_input)
     for i in keywords:
         print(i)
