@@ -5,10 +5,12 @@ import IswPrediction_3
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 
+
 # dictionary from documents
 INPUT_FOLDER_2 = "data"
 DATA_FILE_2 = "parsed_isw.csv"
 df_for_dict = pd.read_csv(f"{INPUT_FOLDER_2}/{DATA_FILE_2}", sep=";").fillna(" ")
+
 
 
 def take_vector_from_isw(date_input):
@@ -48,6 +50,7 @@ def take_vector_from_isw(date_input):
     # Creat vector from text
     keywords = IswPrediction_3.thirdSt(df_st2, df_for_dict)
     return keywords
+
 
 
 # test
