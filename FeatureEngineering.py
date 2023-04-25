@@ -14,7 +14,6 @@ df = pd.read_csv(DATA_FILE, delimiter=';', parse_dates=['start'])
 df["start"] = pd.to_datetime(df["start"])
 df["end"] = pd.to_datetime(df["end"])
 
-#print(df.columns)
 
 def regions_at_time(df, day, start_time, end_time):
     """
@@ -25,11 +24,10 @@ def regions_at_time(df, day, start_time, end_time):
     end_time: string in the format 'HH:MM' representing the time alaram ended to filter by
     """
     # Filter the DataFrame by the specified day and time range
-    mask = (df["start"] >= pd.to_datetime(day + " " + start_time + ":00")) & (df["start"] <= pd.to_datetime(day + " " + end_time + ":59"))
-    #return df[mask]["region_id"].unique()
+    mask = (df["start"] >= pd.to_datetime(day + " " + start_time + ":00")) & (
+                df["start"] <= pd.to_datetime(day + " " + end_time + ":59"))
+    # return df[mask]["region_id"].unique()
     return len(df[mask]["region_id"].unique())
-
-
 
 
 def events_in_region(df, region_id, day):
@@ -48,12 +46,11 @@ def events_in_region(df, region_id, day):
     return num_events
 
 
+# test
+if __name__ == "__main__":
+    print(df.columns)
+    num_regions = regions_at_time(df, '2022-04-07', '11:00', '11:59')
+    print(num_regions)
 
-#test
-"""
-num_regions = regions_at_time(df, '2022-04-07', '11:00', '11:59')
-print(num_regions)
-
-num_events = events_in_region(df, 3, '2022-03-07')
-print(num_events)
-"""
+    num_events = events_in_region(df, 3, '2022-03-07')
+    print(num_events)
