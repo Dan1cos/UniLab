@@ -34,7 +34,7 @@ Merging all data from previous sources(weather, alarms, words, cities) to one da
 
 ### SplittingTrainTest
 
-Splitting meerged data into train and test data(also converting some string and datetime typed into floats)
+Splitting merged data into train and test data(also converting some string and datetime typed into floats)
 
 ### TrainingModel
 
