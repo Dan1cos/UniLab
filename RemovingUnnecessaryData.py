@@ -10,6 +10,7 @@ from num2words import num2words
 import ssl
 
 import nltk
+#downloading nltk content(can cause an exception)
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -17,6 +18,7 @@ except AttributeError:
 else:
     ssl._create_default_https_context = _create_unverified_https_context
 
+#downloading nltk content(can cause an exception)
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -29,7 +31,7 @@ OUTPUT_DATA_FILE = "parsed_isw.csv"
 
 df = pd.read_csv(f"{INPUT_FOLDER}/{DATA_FILE}", sep=";").fillna(" ")
 
-
+#removing first rows with names and dates of the report
 def remove_names_and_date(page_html_text):
     min_num_of_words = 13
     p_index = 0
@@ -52,7 +54,7 @@ def remove_names_and_date(page_html_text):
 
     return page_html_text
 
-
+#removing links(<a> tags) from text
 def remove_links_maps(page_html_text):
     parsed_html = BeautifulSoup(page_html_text, "html.parser")
     p_lines = parsed_html.findAll("p")
@@ -79,6 +81,7 @@ def remove_links_maps(page_html_text):
 
     return page_html_text
 
+#removing different unique strings 
 def remove_unique(page_html_text):
     page_html_text = re.sub(r"http(\S+.*\s)", "", page_html_text)
     page_html_text = re.sub(r"ttp(\S+.*\s)", "", page_html_text)
@@ -100,6 +103,7 @@ def remove_unique(page_html_text):
 
     return page_html_text
 
+#removing words with one letter
 def remove_one_letter_words(data):
     words = word_tokenize(str(data))
 
@@ -110,11 +114,11 @@ def remove_one_letter_words(data):
 
     return new_text
 
-
+#converting to lower case
 def convert_to_lower_case(data):
     return np.char.lower(data)
 
-
+#removing words from nltk.stopwords
 def remove_stop_words(data):
     stop_words = set(stopwords.words("english"))
     not_stop_words = {"no", "not"}
@@ -130,11 +134,11 @@ def remove_stop_words(data):
 
     return new_text
 
-
+#removing punctuation marks
 def remove_punctuation(data):
     return re.sub(r'[^\w\s]', '', data)
 
-
+#lemmatizing function
 def lemmatizing(data):
     lemmatizer = WordNetLemmatizer()
 
@@ -144,12 +148,12 @@ def lemmatizing(data):
         new_text = new_text+" "+lemmatizer.lemmatize(w)
     return new_text
 
+#removing months, pm_am, th
 def remove_months_pm_am_th(data):
     data = re.sub(r"(january|february|march|april|may|june|july|august|september|october|november|december)", "", data)
     data = re.sub(r"(\bpm\b|\bam\b)","",data)
     data = re.sub(r"\bth\b","",data)
     return data
-
 
 
 def preprocess(data):
@@ -172,5 +176,5 @@ df['main_html_v3'] = df['main_html_v2.1'].apply(lambda x: remove_unique(x))
 df['main_html_v4'] = df['main_html_v3'].apply(lambda x: BeautifulSoup(x, "html.parser").text)
 df["report_text"] = df['main_html_v4'].apply(lambda x: preprocess(x))
 
-
+#exporting to csv
 df.to_csv(f"{OUTPUT_FOLDER}/{OUTPUT_DATA_FILE}", sep=";", index=False)
