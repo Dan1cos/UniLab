@@ -46,6 +46,7 @@ train_df = train_df.drop(events_exclude, axis=1)
 train_df = train_df.fillna(0)
 
 ################Some model training
+clf = ModelNameHere
 
 test_target = test_df["event_start"]
 test_target = test_target.apply(lambda x: isNaN_v2(x))
