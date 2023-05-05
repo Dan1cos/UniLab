@@ -54,7 +54,7 @@ Editing data so it would be possible to fit the model, training and testing mode
 
 Script for getting number of alarms of the day and number of alarms in the regions on specific time
 
-### save_page*
+### save_page
 
 Script for returning selected page
 
