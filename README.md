@@ -1,8 +1,18 @@
-# UniLab
+# Project Alarms
 A project for predicting air raid alarms
 (everything could be done by performing each script step by step, how it's written in here(files with * can be skipped))
 
-## Files
+# Project execution
+
+To run creation of the model run script ""
+
+To run creation of the current alarms run script "makingFileEachHour"
+
+To run creation of the endpoint run "SaaS_alarms"
+
+# Files
+
+## Model creation
 
 ### isw_download
 
@@ -48,6 +58,10 @@ Script for getting number of alarms of the day and number of alarms in the regio
 
 Script for returning selected page
 
+---
+
+## Current alarms creation
+
 ### ISWPrediction
 
 Getting info about specific date and converting it into the dataframe with previous words
@@ -59,6 +73,10 @@ Collecting forecast for the specific date for all regions and editing it for fur
 ### makingFileEachHour
 
 Script for predicting alarms for next 12 hours and saving results in file 
+
+---
+
+## Endpoint creation
 
 ### SaaS_alarms
 
