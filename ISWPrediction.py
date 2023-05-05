@@ -1,7 +1,7 @@
 import pandas as pd
 import save_page
-import IswPrediction_2
-import IswPrediction_3
+import RemovingUnnecessaryData
+import Vectorize
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, date
 
@@ -45,10 +45,10 @@ def take_vector_from_isw(date_input):
     df = pd.DataFrame.from_dict(all_data)
 
     # Clean text
-    df_st2 = IswPrediction_2.secondSt(df)
+    df_st2 = RemovingUnnecessaryData.secondSt(df)
 
     # Creat vector from text
-    keywords = IswPrediction_3.thirdSt(df_st2, df_for_dict)
+    keywords = Vectorize.thirdSt(df_st2, df_for_dict)
     return keywords
 
 
