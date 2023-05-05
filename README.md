@@ -4,7 +4,7 @@ A project for predicting air raid alarms
 
 # Project execution
 
-To run creation of the model run script ""
+To run creation of the model run script "FullModelTraining"
 
 To run creation of the current alarms run script "makingFileEachHour"
 
@@ -57,6 +57,10 @@ Script for getting number of alarms of the day and number of alarms in the regio
 ### save_page
 
 Script for returning selected page
+
+### FullModelTraining*
+
+All scripts above for model training were added here to make full execution easier
 
 ---
 
