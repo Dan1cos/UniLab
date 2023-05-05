@@ -70,6 +70,10 @@ Getting info about specific date and converting it into the dataframe with previ
 
 Collecting forecast for the specific date for all regions and editing it for further fitting into the model
 
+### MergingVectorAndWeather
+
+Merging ISWPrediction and CollectForecast data
+
 ### makingFileEachHour
 
 Script for predicting alarms for next 12 hours and saving results in file 
